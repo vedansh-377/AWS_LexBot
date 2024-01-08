@@ -13,10 +13,10 @@ phases:
       - cd lib
       - zip -r9 ../deployment_package.zip .
       - cd ..
-      - zip -g deployment_package.zip lambda.py
+      - zip -g deployment_package.zip lib/lambda.py  # Correct the path to lambda.py
   post_build:
     commands:
-      - echo "Checking if Lambda function  exists..."
+      - echo "Checking if Lambda function exists..."
       - |
         FUNCTION_NAME="github-to-lambda-demo"
         FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$FUNCTION_NAME'].FunctionName" --output text)
