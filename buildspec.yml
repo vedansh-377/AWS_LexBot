@@ -29,4 +29,8 @@ phases:
           aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://deployment_package.zip
         fi
 
+      - echo "Invoking Lambda function..."
+      - aws lambda invoke --function-name $FUNCTION_NAME --payload '{}' output.txt
+      - cat output.txt  # Display the Lambda output
+
       - echo "DONE!!"
