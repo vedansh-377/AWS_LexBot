@@ -16,7 +16,7 @@ phases:
       - zip -g deployment_package.zip lambda.py
   post_build:
     commands:
-      - echo "Checking if Lambda function exists..."
+      - echo "Checking if Lambda function  exists..."
       - |
         FUNCTION_NAME="github-to-lambda-demo"
         FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$FUNCTION_NAME'].FunctionName" --output text)
