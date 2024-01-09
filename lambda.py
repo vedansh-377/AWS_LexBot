@@ -46,8 +46,8 @@ def handler(event, context):
             'body': json.dumps('LexV2 export failed or not yet completed.')
         }
 
-def export_lexv2_model(bot_id, bot_version):
-    client = boto3.client('lexv2-models')
+def export_lexv2_model(bot_id, bot_version, region_name='us-east-1'):
+    client = boto3.client('lexv2-models', region_name=region_name)
     
     response = client.create_export(
         resourceSpecification={
