@@ -1,6 +1,8 @@
 import boto3
 import json
 import requests
+import time
+
 
 def handler(event, context):
     # Replace 'your_model_id' with the actual LexV2 model ID
@@ -10,6 +12,8 @@ def handler(event, context):
     # Export the LexV2 model
     export_response = export_lexv2_model(bot_id, bot_version)
     print("Export Response:", export_response)
+
+    time.sleep(20)
     
     # Describe the export job
     export_job_id = export_response['exportId']
