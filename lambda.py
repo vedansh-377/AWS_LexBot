@@ -2,7 +2,7 @@ import boto3
 import json
 import requests
 
-def lambda_handler(event, context):
+def handler(event, context):
     # Replace 'your_model_id' with the actual LexV2 model ID
     bot_id = 'IQU3BOJ9BH' 
     bot_version = 'Draft'
