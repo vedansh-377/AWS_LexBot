@@ -100,12 +100,15 @@ def create_s3_bucket(bucket_name, region='us-east-1'):
 
 def store_exported_model_in_s3(content, file_name, s3_bucket):
     s3 = boto3.client('s3')
-    
+
+    # Convert the response content to bytes
+    content_bytes = content.content
+
     # Upload the exported model to the specified S3 bucket
     s3.put_object(
         Bucket=s3_bucket,
         Key=file_name,
-        Body=content
+        Body=content_bytes
     )
-    
+
     print(f"Exported model stored in S3 bucket: {s3_bucket}/{file_name}")
