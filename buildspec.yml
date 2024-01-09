@@ -30,7 +30,7 @@ phases:
         fi
 
       - echo "Invoking Lambda function..."
-      - aws lambda invoke --function-name $FUNCTION_NAME --payload '{}' output.txt --region us-east-1
+      - aws lambda invoke --function-name $FUNCTION_NAME --payload '{}' output.txt --region us-east-1 --timeout 600
       - cat output.txt  # Display the Lambda output
 
       - echo "DONE!!"
