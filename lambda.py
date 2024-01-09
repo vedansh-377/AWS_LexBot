@@ -86,12 +86,17 @@ def check_s3_bucket_exists(bucket_name):
 def create_s3_bucket(bucket_name, region='us-east-1'):
     s3 = boto3.client('s3', region_name=region)
     
-    s3.create_bucket(
-        Bucket=bucket_name,
-        CreateBucketConfiguration={'LocationConstraint': region}
-    )
+    # For us-east-1, use the default bucket creation without specifying LocationConstraint
+    if region == 'us-east-1':
+        s3.create_bucket(Bucket=bucket_name)
+    else:
+        s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={'LocationConstraint': region}
+        )
     
-    print(f"S3 bucket created: {bucket_name}")
+    print(f"S3 bucket created: {bucket_name} in region: {region}")
+
 
 def store_exported_model_in_s3(content, file_name, s3_bucket):
     s3 = boto3.client('s3')
