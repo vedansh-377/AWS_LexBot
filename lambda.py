@@ -31,7 +31,7 @@ def handler(event, context):
             file_name = "exported_bot.zip"
         
             # Check if the S3 bucket exists, create it if not
-            s3_bucket = 'Exported_s3'
+            s3_bucket = 'my-lexv2-export-bucket'
             if not check_s3_bucket_exists(s3_bucket):
                 create_s3_bucket(s3_bucket)
             
