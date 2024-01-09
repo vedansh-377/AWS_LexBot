@@ -83,12 +83,12 @@ def check_s3_bucket_exists(bucket_name):
     except Exception as e:
         return False
 
-def create_s3_bucket(bucket_name):
-    s3 = boto3.client('s3')
+def create_s3_bucket(bucket_name, region='us-east-1'):
+    s3 = boto3.client('s3', region_name=region)
     
     s3.create_bucket(
         Bucket=bucket_name,
-        CreateBucketConfiguration={'LocationConstraint': 'your_region'}
+        CreateBucketConfiguration={'LocationConstraint': region}
     )
     
     print(f"S3 bucket created: {bucket_name}")
