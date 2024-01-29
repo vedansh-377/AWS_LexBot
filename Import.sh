@@ -5,13 +5,12 @@ pip install --upgrade pip setuptools
 pip install -r requirements.txt -t lib
 
 echo "Zipping deployment package..."
-cd lib || { echo "Error: Could not change to 'lib' directory"; exit 1; }
-zip -r9 ../deployment_package.zip .
-cd ..
+(cd lib && zip -r9 ../deployment_package.zip .)
+zip -g deployment_package.zip lambda.py
 
 echo "Checking if Lambda function exists..."
 FUNCTION_NAME="github-to-lambda-demo"
-FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$FUNCTION_NAME'].FunctionName" --output text --region us-east-1)
+FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$FUNCTION_NAME'].FunctionName" --output text --region us-east-1s)
 
 if [ -z "$FUNCTION_EXISTS" ]; then
   echo "Creating new Lambda function..."
