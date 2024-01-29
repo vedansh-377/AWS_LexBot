@@ -24,10 +24,21 @@ jobs:
         python-version: 3.11
 
     - name: Set execute permissions on Import.sh
-      run: chmod +x Import.sh
+      run: |
+        chmod +x export.sh
+        chmod +x import.sh
 
     - name: Install dependencies and deploy Lambda
-      run: ./Import.sh
+      run: |
+        ./export.sh
+        aws s3 cp s3://$SOURCE_BUCKET/export_data.zip
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    - name: Run Import Script
+      run: |
+          ./import.sh
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
