@@ -15,7 +15,7 @@ FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$
 
 if [ -z "$FUNCTION_EXISTS" ]; then
   echo "Creating new Lambda function..."
-  aws lambda create-function --function-name "$FUNCTION_NAME" --runtime python3.11 --handler lambda.handler --role arn:aws:iam::003261238302:role/Lambda --zip-file fileb://deployment_package.zip --region us-east-1 --timeout 1000
+  aws lambda create-function --function-name "$FUNCTION_NAME" --runtime python3.11 --handler lambda.handler --role arn:aws:iam::003261238302:role/Lambda --zip-file fileb://deployment_package.zip --region us-east-1 --timeout 900
 else
   echo "Updating existing Lambda function..."
   aws lambda update-function-code --function-name "$FUNCTION_NAME" --zip-file fileb://deployment_package.zip --region us-east-1
