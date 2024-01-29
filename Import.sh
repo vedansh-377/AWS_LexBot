@@ -19,7 +19,7 @@ else
   echo "Updating existing Lambda function..."
   aws lambda update-function-code --function-name "$FUNCTION_NAME" --zip-file fileb://deployment_package.zip --region us-east-1
 fi
-
+sleep 20
 echo "Invoking Lambda function..."
 aws lambda invoke --function-name "$FUNCTION_NAME" --payload '{}' output.txt --region us-east-1
 cat output.txt  # Display the Lambda output
