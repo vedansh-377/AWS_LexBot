@@ -11,11 +11,11 @@ cd ..
 
 echo "Checking if Lambda function exists..."
 FUNCTION_NAME="github-to-lambda-demo"
-FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$FUNCTION_NAME'].FunctionName" --output text --region us-east-1 || true)
+FUNCTION_EXISTS=$(aws lambda list-functions --query "Functions[?FunctionName=='$FUNCTION_NAME'].FunctionName" --output text --region us-east-1)
 
 if [ -z "$FUNCTION_EXISTS" ]; then
   echo "Creating new Lambda function..."
-  aws lambda create-function --function-name "$FUNCTION_NAME" --runtime python3.11 --handler lambda.handler --role arn:aws:iam::003261238302:role/Lambda --zip-file fileb://deployment_package.zip --region us-east-1 --timeout 600
+  aws lambda create-function --function-name "$FUNCTION_NAME" --runtime python3.11 --handler lambda.handler --role arn:aws:iam::003261238302:role/Lambda --zip-file fileb://deployment_package.zip --region us-east-1 --timeout 1000
 else
   echo "Updating existing Lambda function..."
   aws lambda update-function-code --function-name "$FUNCTION_NAME" --zip-file fileb://deployment_package.zip --region us-east-1
