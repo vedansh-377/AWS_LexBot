@@ -34,6 +34,7 @@ jobs:
         ./export.sh
         echo "Running AWS CLI command:"
         aws s3 cp s3://my-lexv2-export-bucket/exported_bot.zip -
+        ls -l
         echo "Exit code after aws s3 cp: $?"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
