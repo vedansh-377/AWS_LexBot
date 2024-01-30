@@ -12,4 +12,4 @@ aws s3api create-bucket --bucket $DESTINATION_BUCKET --region <destination_regio
 # Your migration logic here
 
 # Import data to the destination S3 bucket
-aws s3 cp export_data.zip s3://$DESTINATION_BUCKET/
+aws s3 cp exported_bot.zip s3://$DESTINATION_BUCKET/
