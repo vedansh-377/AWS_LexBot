@@ -2,7 +2,7 @@ import requests
 import boto3
 import time
 
-def lambda_handler(event, context):
+def handler(event, context):
     # AWS service clients
     lex_models_client = boto3.client('lexv2-models')
     s3_client = boto3.client('s3')
