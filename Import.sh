@@ -5,7 +5,6 @@
 
 DESTINATION_BUCKET="my-lexv2-import-bucket"
 
-
 # Create the destination S3 bucket if it doesn't exist
 aws s3api create-bucket --bucket $DESTINATION_BUCKET --region <destination_region>
 
