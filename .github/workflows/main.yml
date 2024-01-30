@@ -33,7 +33,7 @@ jobs:
     - name: Install dependencies and deploy Lambda
       run: |
         ./export.sh
-        aws s3 cp s3://$SOURCE_BUCKET/export_data.zip .
+        aws s3 cp s3://my-lexv2-export-bucket/export_data.zip .
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
