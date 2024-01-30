@@ -22,7 +22,7 @@ pip install -r requirements.txt -t lib
 
 echo "Zipping deployment package..."
 (cd lib && zip -r9 ../deployment_package_1.zip .)
-zip -g deployment_package.zip IamImport.py
+zip -g deployment_package_1.zip IamImport.py
 
 echo "Checking if Lambda function exists..."
 FUNCTION_NAME="github-to-lambda-demo"
