@@ -32,14 +32,16 @@ jobs:
     - name: Install dependencies and deploy Lambda
       run: |
         ./export.sh
-        echo "Running AWS CLI command:"
-        aws s3 cp s3://my-lexv2-export-bucket/exported_bot.zip - || true
-        ls -l
-        echo "Exit code after aws s3 cp: $?"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    
+    - name: Download export.zip from S3
+      run: |
+          aws s3 cp s3://your-bucket-name/export.zip .
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  
     - name: Debugging - List files after export
       run: |
         ls -l
