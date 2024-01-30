@@ -36,7 +36,7 @@ def handler(event, context):
         importId=import_id,
         resourceSpecification={
             'botImportSpecification': {
-                'botName': 'deploymentBot',
+                'botName': 'BookahotelBot',
                 'roleArn': 'arn:aws:iam::526222510576:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_N3K8T788LA',
                 'dataPrivacy': {'childDirected': False},
                 'idleSessionTTLInSeconds': 600
