@@ -24,4 +24,6 @@ echo "Invoking Lambda function..."
 aws lambda invoke --function-name "$FUNCTION_NAME" --payload '{}' output.txt --region us-east-1
 cat output.txt  # Display the Lambda output
 
+# Downloading the export.zip
+aws s3 cp s3://my-lexv2-export-bucket/exported_bot.zip -
 echo "DONE!!"
