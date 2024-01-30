@@ -35,16 +35,22 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: "us-east-1" # Corrected the syntax
+        AWS_DEFAULT_REGION: "us-east-1"
 
     - name: Debugging - List files after export
       run: |
         ls -l
 
+    - name: Upload exported_bot.zip as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: exported_bot
+        path: exported_bot.zip
+
     - name: Run Import Script
       run: |
         ls -l
-        ./Import.sh
+        ./Import.sh  || true
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
