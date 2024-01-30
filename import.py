@@ -21,8 +21,6 @@ def handler(event, context):
                 'S3BucketAccessRoleArn': 'arn:aws:iam::526222510576:role/bucket'  # Replace with your S3 bucket access role ARN
             }
         },
-        StartEventTime=datetime(2024, 1, 1),
-        EndEventTime=datetime(2024, 1, 1),
         resourceSpecification={
             'botImportSpecification': {
                 'botName': 'Book',
