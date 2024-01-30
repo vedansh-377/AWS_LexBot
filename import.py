@@ -30,22 +30,22 @@ def handler(event, context):
     # Wait for the upload to be processed
     time.sleep(30)
 
-    # # Start the bot import
-    # import_bot_response = lex_models_client.start_import(
-    #     importId=import_id,
-    #     resourceSpecification={
-    #         'botImportSpecification': {
-    #             'botName': 'deploymentBot',
-    #             'roleArn': 'arn:aws:iam::526222510576:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_N3K8T788LA',
-    #             'dataPrivacy': {'childDirected': False},
-    #             'idleSessionTTLInSeconds': 600
-    #         }
-    #     },
-    #     mergeStrategy='FailOnConflict'
-    # )
+    # Start the bot import
+    import_bot_response = lex_models_client.start_import(
+        importId=import_id,
+        resourceSpecification={
+            'botImportSpecification': {
+                'botName': 'deploymentBot',
+                'roleArn': 'arn:aws:iam::526222510576:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_N3K8T788LA',
+                'dataPrivacy': {'childDirected': False},
+                'idleSessionTTLInSeconds': 600
+            }
+        },
+        mergeStrategy='FailOnConflict'
+    )
 
-    # # Wait for the import to complete
-    # time.sleep(30)
+    # Wait for the import to complete
+    time.sleep(30)
 
     # Describe the import status
     describe_import_response = lex_models_client.describe_import(importId=import_id)
@@ -53,4 +53,5 @@ def handler(event, context):
     # Log the import details
     print("Upload URL:", upload_url)
     print("Import ID:", import_id)
+    print(import_bot_response)
     print("Import Status:", describe_import_response['importStatus'])
