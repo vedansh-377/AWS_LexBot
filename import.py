@@ -1,6 +1,7 @@
 import requests
 import boto3
 import time
+import json
 
 def handler(event, context):
     # AWS service clients
@@ -55,3 +56,14 @@ def handler(event, context):
     print("Import ID:", import_id)
     print(import_bot_response)
     print("Import Status:", describe_import_response['importStatus'])
+
+    if import_bot_response['importStatus'] == 'Completed':
+        return {
+            'statusCode': 200,
+            'body': json.dumps('LexV2 import completed successfully!')
+        }
+    else:
+        return {
+            'statusCode': 500,
+            'body': json.dumps('LexV2 import not yet completed.')
+        }
