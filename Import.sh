@@ -7,7 +7,9 @@
 DESTINATION_BUCKET="my-lexv2-import-bucket"
 DESTINATION_REGION="us-east-1"
 
-# Check if any zip file exists in the /tmp directory
+pwd 
+ls -r
+# Check if any zip file exists in the / directory
 EXPORTED_MODEL_FILENAME=$(ls -t /home/runner/work/AWS_LexBot/AWS_LexBot/*.zip | head -n 1)
 if [ -n "$EXPORTED_MODEL_FILENAME" ]; then
     echo "Using existing exported model: $EXPORTED_MODEL_FILENAME"
