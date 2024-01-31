@@ -10,7 +10,7 @@ DESTINATION_REGION="us-east-1"
 pwd 
 ls -r
 # Check if any zip file exists in the / directory
-EXPORTED_MODEL_FILENAME=$(ls -t /home/runner/work/AWS_LexBot/AWS_LexBot/version*.zip)
+EXPORTED_MODEL_FILENAME=version4.zip
 if [ -n "$EXPORTED_MODEL_FILENAME" ]; then
     echo "Using existing exported model: $EXPORTED_MODEL_FILENAME"
 else
