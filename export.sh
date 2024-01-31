@@ -33,7 +33,7 @@ LATEST_MODEL=$(aws s3 ls s3://$S3_BUCKET/ | sort -r | head -n 1 | awk '{print $4
 echo "Latest model file: $LATEST_MODEL"
 
 # Download the latest model to the / directory
-aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL /home/runner/work/AWS_LexBot/AWS_LexBot/$LATEST_MODEL
+aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL /home/runner/work/AWS_LexBot/AWS_LexBot/$LATEST_MODEL.zip
 
 # Print the working directory after download
 echo "Working directory after download:"
