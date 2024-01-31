@@ -6,7 +6,7 @@
 # Set the destination bucket name and region
 DESTINATION_BUCKET="my-lexv2-import-bucket"
 DESTINATION_REGION="us-east-1"
-
+print("$EXPORTED_MODEL_FILENAME")
 # Check if any zip file exists in the /tmp directory
 # EXPORTED_MODEL_FILENAME=$(ls -t /tmp/*.zip | head -n 1)
 if [ -n "$EXPORTED_MODEL_FILENAME" ]; then
