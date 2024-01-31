@@ -25,8 +25,16 @@
 # cat output.txt  # Display the Lambda output
 
 S3_BUCKET="my-lexv2-export-bucket"
+
+# Get the latest model file
 LATEST_MODEL=$(aws s3 ls s3://$S3_BUCKET/ | sort -r | head -n 1 | awk '{print $4}')
-aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL .
+
+# Print the latest model file for debugging purposes
+echo "Latest model file: $LATEST_MODEL"
+
+# Download the latest model to the /tmp directory
+aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL /tmp/
+
 # Print the working directory after download
 echo "Working directory after download:"
 pwd
@@ -40,3 +48,4 @@ echo "File size of the downloaded model:"
 stat --printf="%s bytes\n" /tmp/$LATEST_MODEL
 
 echo "DONE!!"
+
