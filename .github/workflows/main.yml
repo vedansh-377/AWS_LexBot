@@ -28,14 +28,10 @@ jobs:
         chmod +x export.sh
         chmod +x Import.sh
 
-    - name: Set up workspace
-      run: mkdir -p ${{ runner.workspace }}
-
     - name: Install dependencies and deploy Lambda
       run: |
-        ./export.sh
-        # sudo mv /tmp/$LATEST_MODEL ${{ runner.workspace }}/$LATEST_MODEL
-
+        export LATEST_MODEL=$(./export.sh)
+        echo "Latest Model: $LATEST_MODEL"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
