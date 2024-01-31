@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  export:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,22 +25,52 @@ jobs:
 
     - name: Set execute permissions and list files
       run: |
-        ls -l
         chmod +x export.sh
-        chmod +x Import.sh
+
+    - name: Set up workspace
+      run: mkdir -p ${{ runner.workspace }}
 
     - name: Install dependencies and deploy Lambda
       run: |
         ./export.sh
+        mv /tmp/$LATEST_MODEL ${{ runner.workspace }}/$LATEST_MODEL
+        cp ${{ runner.workspace }}/$LATEST_MODEL ${{ runner.workspace }}/shared/
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: "us-east-1"
 
+  import:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Set execute permissions and list files
+      run: |
+        chmod +x Import.sh
+
+    - name: Set up workspace
+      run: mkdir -p ${{ runner.workspace }}
+
+    - name: Copy exported ZIP from shared location
+      run: |
+        cp ${{ runner.workspace }}/shared/$LATEST_MODEL ${{ runner.workspace }}
+
     - name: Run Import Script
       run: |
         ./Import.sh 
-        ls -r
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
