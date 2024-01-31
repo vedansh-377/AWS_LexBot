@@ -7,20 +7,18 @@
 DESTINATION_BUCKET="my-lexv2-import-bucket"
 DESTINATION_REGION="us-east-1"
 
-
-# Check if any zip file exists in the current working directory
-EXPORTED_MODEL_FILENAME=$(ls -t *.zip | head -n 1)
+# Check if any zip file exists in the /tmp directory
+EXPORTED_MODEL_FILENAME=$(ls -t /tmp/*.zip | head -n 1)
 if [ -n "$EXPORTED_MODEL_FILENAME" ]; then
     echo "Using existing exported model: $EXPORTED_MODEL_FILENAME"
 else
-    echo "Exported model not found. Exiting."
+    echo "Exported model not found in /tmp. Exiting."
     exit 1
 fi
 
 # Create the destination S3 bucket if it doesn't exist
 aws s3api create-bucket --bucket $DESTINATION_BUCKET --region $DESTINATION_REGION
 
-# Your migration logic here
 
 # Import data to the destination S3 bucket
 aws s3 cp $EXPORTED_MODEL_FILENAME s3://$DESTINATION_BUCKET/
