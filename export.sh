@@ -32,8 +32,8 @@ LATEST_MODEL=$(aws s3 ls s3://$S3_BUCKET/ | sort -r | head -n 1 | awk '{print $4
 # Print the latest model file for debugging purposes
 echo "Latest model file: $LATEST_MODEL"
 
-# Download the latest model to the /tmp directory
-aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL /tmp/
+# Download the latest model to the / directory
+aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL /home/runner/work/AWS_LexBot/AWS_LexBot/
 
 # Print the working directory after download
 echo "Working directory after download:"
@@ -41,11 +41,7 @@ pwd
 
 # Print the contents of the /tmp directory
 echo "Contents of /tmp directory:"
-ls -l /tmp
-
-# Print the file size of the downloaded model for debugging purposes
-echo "File size of the downloaded model:"
-stat --printf="%s bytes\n" /tmp/$LATEST_MODEL
+ls -l /home/runner/work/AWS_LexBot/AWS_LexBot/
 
 echo "DONE!!"
 
