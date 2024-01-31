@@ -28,7 +28,7 @@ def handler(event, context):
 
         if response.status_code == 200:
             # Specify the file name for the downloaded file
-            file_name = "exported_bot.zip"
+            file_name = f'version {bot_version}'
         
             # Check if the S3 bucket exists, create it if not
             s3_bucket = 'my-lexv2-export-bucket'

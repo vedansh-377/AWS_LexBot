@@ -24,6 +24,7 @@ echo "Invoking Lambda function..."
 aws lambda invoke --function-name "$FUNCTION_NAME" --payload '{}' output.txt --region us-east-1
 cat output.txt  # Display the Lambda output
 
-# Downloading the export.zip
-aws s3 cp s3://my-lexv2-export-bucket/exported_bot.zip  .
+S3_BUCKET="my-lexv2-export-bucket"
+LATEST_MODEL=$(aws s3 ls s3://$S3_BUCKET/ | sort -r | head -n 1 | awk '{print $4}')
+aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL .
 echo "DONE!!"
