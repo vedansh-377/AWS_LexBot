@@ -10,13 +10,15 @@ DESTINATION_REGION="us-east-1"
 pwd 
 ls -r
 # Check if any zip file exists in the / directory
-EXPORTED_MODEL_FILENAME=$(ls -t /home/runner/work/AWS_LexBot/AWS_LexBot/version*.zip 2>/dev/null | head -n 1)
+EXPORTED_MODEL_FILENAME=$(ls -t /home/runner/work/AWS_LexBot/AWS_LexBot/version*.zip)
 if [ -n "$EXPORTED_MODEL_FILENAME" ]; then
     echo "Using existing exported model: $EXPORTED_MODEL_FILENAME"
 else
     echo "Exported model not found. Exiting."
     exit 1
 fi
+
+
 
 # Create the destination S3 bucket if it doesn't exist
 aws s3api create-bucket --bucket $DESTINATION_BUCKET --region $DESTINATION_REGION
