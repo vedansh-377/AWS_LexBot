@@ -73,7 +73,7 @@ def handler(event, context):
     print(import_bot_response)
     print("Import Status:", describe_import_response['importStatus'])
 
-    if import_bot_response['importStatus'] == 'Completed':
+    if describe_import_response['importStatus'] == 'Completed':
         return {
             'statusCode': 200,
             'body': json.dumps('LexV2 import completed successfully!')

@@ -43,3 +43,13 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
         AWS_DEFAULT_REGION: "us-east-1"
+    
+    - name: Create GitHub tag on successful import
+      if: success()
+      run: |       
+        # Create a GitHub tag
+        TAG_NAME="Lex-$LATEST_MODEL"
+        git tag $TAG_NAME
+        git push origin $TAG_NAME
+        echo "GitHub tag created: $TAG_NAME"
+    
