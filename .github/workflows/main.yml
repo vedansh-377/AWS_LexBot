@@ -47,9 +47,13 @@ jobs:
     - name: Create GitHub tag on successful import
       if: success()
       run: |       
+        # Get the commit SHA
+        COMMIT_SHA=$(git rev-parse --short HEAD)
+        
         # Create a GitHub tag
         TAG_NAME="Lex-$LATEST_MODEL"
         git tag $TAG_NAME
-        git push origin $TAG_NAME
+        git push origin $TAG_NAME $GH_TOKEN
         echo "GitHub tag created: $TAG_NAME"
-    
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
