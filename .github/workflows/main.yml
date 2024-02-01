@@ -58,5 +58,5 @@ jobs:
         git tag $TAG_NAME
         git push origin $TAG_NAME $GH_TOKEN
         echo "GitHub tag created: $TAG_NAME"
-        env:
+      env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
