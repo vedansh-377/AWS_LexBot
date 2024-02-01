@@ -7,7 +7,7 @@ import time
 def handler(event, context):
     # Replace 'your_model_id' with the actual LexV2 model ID
     bot_id = 'IQU3BOJ9BH' 
-    bot_version = '4'
+    bot_version = '9'
     
     # Export the LexV2 model
     export_response = export_lexv2_model(bot_id, bot_version)
