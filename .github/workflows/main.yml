@@ -44,14 +44,14 @@ jobs:
     #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
     #     AWS_DEFAULT_REGION: "us-east-1"
   
-    - name: Set Git user details
-      run: |
-        git config --global user.email "vedansh.bhatnagar37@gmail.com"
-        git config --global user.name "vedansh-377"
+    # - name: Set Git user details
+    #   run: |
+    #     git config --global user.email "vedansh.bhatnagar37@gmail.com"
+    #     git config --global user.name "vedansh-377"
   
     - name: Create Release
       run: |
-        git tag -a v1.0 -m "Release v1.0"
-        git push origin v1.0
+        git tag -a v2.0 -m "Lex v2.0"
+        git push origin v2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
