@@ -44,19 +44,9 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
         AWS_DEFAULT_REGION: "us-east-1"
     
-    - name: Create GitHub tag on successful import
-      if: success()
-      run: |       
-        # Set the value of $LATEST_MODEL if needed
-        LATEST_MODEL="your_value_here"
-                
-        # Get the commit SHA
-        COMMIT_SHA=$(git rev-parse --short HEAD)
-
-        # Create a GitHub tag
-        TAG_NAME="Lex-$LATEST_MODEL"
-        git tag $TAG_NAME
-        git push origin $TAG_NAME $GH_TOKEN
-        echo "GitHub tag created: $TAG_NAME"
+    - name: Create Release
+      run: |
+        git tag -a v1.0 -m "Release v1.0"
+        git push origin v1.0
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
