@@ -9,9 +9,9 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 script {
-                    // Define Docker tool installation
+                    // Define Docker tool installation (use the name you configured)
                     def dockerTool = tool 'Docker'
-                    
+
                     // Run the entire stage inside a Docker container
                     withDockerContainer(image: 'amazonlinux:2', tool: dockerTool) {
                         // Update the package list and install Python3
@@ -28,9 +28,9 @@ pipeline {
         stage('Run Python Script') {
             steps {
                 script {
-                    // Define Docker tool installation
+                    // Define Docker tool installation (use the name you configured)
                     def dockerTool = tool 'Docker'
-                    
+
                     // Run the Python script inside a Docker container
                     withDockerContainer(image: 'amazonlinux:2', tool: dockerTool) {
                         withCredentials([[
