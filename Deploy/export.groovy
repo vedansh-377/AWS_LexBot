@@ -8,11 +8,11 @@ pipeline {
     stages {
         stage('Setup Environment') {
             steps {
-                // Make sure Jenkins has the necessary permissions for apt-get
-                sh 'sudo apt-get update && sudo apt-get install -y python3'
+                // Update the package list and install Python3 without sudo
+                sh 'apt-get update && apt-get install -y python3'
 
-                // Install pip and required Python packages
-                sh 'sudo apt-get install -y python3-pip'
+                // Install pip and required Python packages without sudo
+                sh 'apt-get install -y python3-pip'
                 sh 'pip3 install boto3 requests'
             }
         }
