@@ -8,12 +8,9 @@ pipeline {
     stages {
         stage('Setup Environment') {
             steps {
+                // Run the entire stage inside a Docker container
                 script {
-                    // Define Docker tool installation (use the name you configured)
-                    def dockerTool = tool 'Docker'
-
-                    // Run the entire stage inside a Docker container
-                    withDockerContainer(image: 'amazonlinux:2', tool: dockerTool) {
+                    docker.image('amazonlinux:2').inside {
                         // Update the package list and install Python3
                         sh 'yum update -y && yum install -y python3'
 
@@ -27,19 +24,16 @@ pipeline {
 
         stage('Run Python Script') {
             steps {
+                // Run the Python script inside a Docker container
                 script {
-                    // Define Docker tool installation (use the name you configured)
-                    def dockerTool = tool 'Docker'
-
-                    // Run the Python script inside a Docker container
-                    withDockerContainer(image: 'amazonlinux:2', tool: dockerTool) {
-                        withCredentials([[
-                            $class: 'AmazonWebServicesCredentialsBinding',
-                            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                            credentialsId: 'your-aws-credentials-id'
-                        ]]) {
-                            sh 'python3 lambda.py'
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                        credentialsId: 'your-aws-credentials-id'
+                    ]]) {
+                        docker.image('amazonlinux:2').inside {
+                            sh 'python3 Export.py'
                         }
                     }
                 }
