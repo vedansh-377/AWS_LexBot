@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'amazonlinux:2'
-        }
-    }
+    agent any
 
     environment {
         PATH = "/usr/local/bin:${env.PATH}"
@@ -12,12 +8,17 @@ pipeline {
     stages {
         stage('Setup Environment') {
             steps {
-                // Update the package list and install Python3
-                sh 'yum update -y && yum install -y python3'
+                // Run the entire pipeline in a Docker container
+                script {
+                    docker.image('amazonlinux:2').inside {
+                        // Update the package list and install Python3
+                        sh 'yum update -y && yum install -y python3'
 
-                // Install pip and required Python packages
-                sh 'yum install -y python3-pip'
-                sh 'pip3 install boto3 requests'
+                        // Install pip and required Python packages
+                        sh 'yum install -y python3-pip'
+                        sh 'pip3 install boto3 requests'
+                    }
+                }
             }
         }
 
@@ -31,7 +32,9 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                         credentialsId: 'your-aws-credentials-id'
                     ]]) {
-                        sh 'python3 Export.py'
+                        docker.image('amazonlinux:2').inside {
+                            sh 'python3 Export.py'
+                        }
                     }
                 }
             }
