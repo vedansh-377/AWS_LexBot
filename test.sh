@@ -18,6 +18,7 @@ else
     exit 1
 fi
 
+sleep 20
 # Retrieve the test execution status
 test_execution_status=$(aws lexv2-models describe-test-execution --test-execution-id $test_execution_id | jq -r '.testExecutionStatus')
 
