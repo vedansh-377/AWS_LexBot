@@ -12,9 +12,10 @@ def handler(event, context):
     bot_version = '9'
 
     github_token = os.environ.get('GITHUB_TOKEN')
-    repo_name = os.environ.get('REPO')
-    github_branch = os.environ.get('BRANCH')
-    github_directory = os.environ.get('DIRECTORY')
+    repo_name = 'AWS_LexBot'
+    github_branch = 'main'  # or any other branch
+    github_directory = 'lexzip'  # Specify the directory in the GitHub repo
+
 
     # Export the LexV2 model
     export_response = export_lexv2_model(bot_id, bot_version)
