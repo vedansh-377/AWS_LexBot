@@ -31,13 +31,14 @@ jobs:
       - name: Set execute permissions
         run: |
           chmod +x export.py
-          chmod +x test.sh
-          # chmod +x import.py
+          chmod +x test.py
 
       - name: Run test.sh and capture status
         id: test
         run: |
-          ./test.sh
+          final_status=$(python3 test.py)
+          echo "::set-output name=final_status::$final_status"
+
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -45,7 +46,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       
       - name: Run to export Lex Bot if test passed
-        if: steps.test.outputs == 'Completed'
+        if: steps.test.outputs.final_status == 'Completed'
         run: python3 export.py
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
