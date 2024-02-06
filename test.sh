@@ -3,7 +3,7 @@
 # Start the test and retrieve the test execution ID
 test_response=$(aws lexv2-models start-test-execution \
     --test-set-id M1CLOBRPZH \
-    --target "botAliasTarget={botId=IQU3BOJ9BH,botAliasId=TSTALIASID,localeId=en_US}" \
+    --target "botAliasTarget={botId=V2V5BO42CC,botAliasId=TSTALIASID,localeId=en_US}" \
     --api-mode Streaming \
     --test-execution-modality Text)
 
