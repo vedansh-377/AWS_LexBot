@@ -2,7 +2,6 @@ import os
 import boto3
 import time
 import json
-
 import requests
 
 def get_latest_zip_from_folder(folder):
@@ -12,12 +11,15 @@ def get_latest_zip_from_folder(folder):
     # Filter out only ZIP files
     zip_files = [file for file in files if file.endswith('.zip')]
 
-    # Sort the ZIP files based on their names (assuming they have version numbers in their names)
-    sorted_zip_files = sorted(zip_files, reverse=True)
+    # Get the full path for each ZIP file
+    zip_files_paths = [os.path.join(folder, file) for file in zip_files]
+
+    # Sort the ZIP files based on their modification time
+    sorted_zip_files = sorted(zip_files_paths, key=os.path.getmtime, reverse=True)
 
     if sorted_zip_files:
         # Return the path to the latest ZIP file
-        return os.path.join(folder, sorted_zip_files[0])
+        return sorted_zip_files[0]
 
     return None
 
@@ -32,7 +34,7 @@ def create_github_release(owner, repo, tag_name, release_name, github_token):
         "name": release_name,
         "body": "Release created automatically after successful LexV2 import."
     }
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response = requests.post(url, headers=headers, json=data)
     return response.status_code == 201
 
 def main():
