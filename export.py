@@ -68,9 +68,7 @@ def store_exported_model_in_github(content, file_name):
     repo_owner = 'vedansh-377'
     repo_name = 'AWS_LexBot'
     branch_name = 'main'
-    file_path = f'{file_name}'  # Modify this path as per your requirement
-
-    # Retrieve GitHub personal access token from environment variables
+    file_path = f'LexZip/{file_name}' 
     github_token = os.environ.get('GITHUB_TOKEN')
 
     if not github_token:
@@ -97,6 +95,7 @@ def store_exported_model_in_github(content, file_name):
 
     # Make the PUT request to upload the file to GitHub
     response = requests.put(url, headers=headers, json=payload)
+    print(response)
 
     if response.status_code == 200:
         print(f"LexV2 model zip file '{file_name}' uploaded to GitHub successfully!")
