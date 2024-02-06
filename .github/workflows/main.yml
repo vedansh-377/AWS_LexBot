@@ -37,13 +37,12 @@ jobs:
     - name: Run to export Lex Bot and run test set
       id : test
       run: |
-        ./test.sh
+        test_execution_status=$(./test.sh)
         if [[ "${{ steps.test.outputs.test_execution_status }}" == "Completed" ]]; then
           python3 export.py
         else
           echo "Test did not pass, skipping export."
         fi
-        # python3 export.py
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
