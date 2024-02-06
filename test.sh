@@ -5,7 +5,7 @@ test_response=$(aws lexv2-models start-test-execution \
     --test-set-id M1CLOBRPZH \
     --target "botAliasTarget={botId=IQU3BOJ9BH,botAliasId=TSTALIASID,localeId=en_US}" \
     --api-mode Streaming \
-    --test-execution-modality text)
+    --test-execution-modality Text)
 
 # Extract the test execution ID from the response
 test_execution_id=$(echo $test_response | jq -r '.testExecutionId')
