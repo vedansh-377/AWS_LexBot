@@ -10,76 +10,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install AWS CLI
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y awscli
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
 
-    - name: Install Python dependencies
-      run: |
-        python3 -m pip install --upgrade pip setuptools
-        python3 -m pip install -r requirements.txt
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip setuptools
+          python3 -m pip install -r requirements.txt
 
-    - name: Set execute permissions
-      run: |
-        chmod +x export.py
-        chmod +x test.sh
-        # chmod +x import.py
+      - name: Set execute permissions
+        run: |
+          chmod +x export.py
+          chmod +x test.sh
+          # chmod +x import.py
 
-    - name: Run test.sh and capture status
-      id: test
-      run: |
-        test_execution_status=$(./test.sh)
-        echo "::set-output name=test_execution_status::$test_execution_status"
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: "us-east-1"
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-  
-    - name: Run to export Lex Bot if test passed
-      if: ${{ steps.test.outputs.test_execution_status == 'Completed' }}
-      run: python3 export.py
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: "us-east-1"
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
-    # - name: Run Import Script
-    #   run: |
-    #     python3 import.py ${{ secrets.GITHUB_REPO }} ${{ secrets.GITHUB_BRANCH }} ${{ secrets.GITHUB_DIRECTORY }}
-    #   env:
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
-    #     AWS_DEFAULT_REGION: "us-east-1"
-
-
-    # - name: Run Import Script
-    #   run: |
-    #     python3 import.py
-    #   env:
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
-    #     AWS_DEFAULT_REGION: "us-east-1"
-
-  
-    # - name: Set Git user details
-    #   run: |
-    #     git config --global user.email "vedansh.bhatnagar37@gmail.com"
-    #     git config --global user.name "vedansh-377"
-  
-    # - name: Create Release
-    #   run: |
-    #     git tag -a v2.0 -m "Lex v2.0"
-    #     git push origin v2.0
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Run test.sh and capture status
+        id: test
+        run: |
+          test_execution_status=$(./test.sh)
+          echo "$test_execution_status"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      
+      - name: Run to export Lex Bot if test passed
+        if: ${{ steps.test.outputs.test_execution_status == 'Completed' }}
+        run: python3 export.py
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
