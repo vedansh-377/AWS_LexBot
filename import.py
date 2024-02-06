@@ -21,6 +21,20 @@ def get_latest_zip_from_folder(folder):
 
     return None
 
+def create_github_release(owner, repo, tag_name, release_name, github_token):
+    url = f"https://api.github.com/repos/{owner}/{repo}/releases"
+    headers = {
+        "Authorization": f"token {github_token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    data = {
+        "tag_name": tag_name,
+        "name": release_name,
+        "body": "Release created automatically after successful LexV2 import."
+    }
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    return response.status_code == 201
+
 def main():
     # AWS service clients
     lex_models_client = boto3.client('lexv2-models')
@@ -60,7 +74,7 @@ def main():
                 'idleSessionTTLInSeconds': 600
             }
         },
-        mergeStrategy='FailOnConflict'
+        mergeStrategy='Overwrite'
     )
 
     # Wait for the import to complete
@@ -77,7 +91,15 @@ def main():
 
     if describe_import_response['importStatus'] == 'Completed':
         print('LexV2 import completed successfully!')
-        return 0
+        # Create a GitHub release with the tag name as the name of the latest ZIP file
+        zip_name = os.path.basename(latest_zip_path)
+        github_token = os.getenv('GITHUB_TOKEN')
+        if create_github_release('vedansh-377', 'AWS_LexBot', zip_name, f"Release {zip_name}", github_token):
+            print('GitHub release created successfully!')
+            return 0
+        else:
+            print('Failed to create GitHub release after LexV2 import.')
+            return 1
     else:
         print('LexV2 import not yet completed.')
         return 1
