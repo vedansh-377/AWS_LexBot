@@ -42,10 +42,10 @@ def handler(event, context):
             g = Github(github_token)
 
             # Get the GitHub repository
-            repo = g.get_repo(repo_name)
+            # repo = g.get_repo(repo_name)
 
             # Store the exported model in the GitHub repository
-            store_exported_model_in_github(repo, github_branch, github_directory, file_name, response.content)
+            store_exported_model_in_github(repo_name, github_branch, github_directory, file_name, response.content)
 
             # Add any additional logic or processing here
 
@@ -91,7 +91,7 @@ def store_exported_model_in_github(repo, branch, directory, file_name, content):
     contents = repo.get_contents(directory, ref=branch)
 
     # Create a new file in the GitHub repo
-    repo.create_file(f'{directory}/{file_name}', f'Add {file_name}', content, branch=branch)
+    repo.create_file(f'{directory}/{file_name}', f'Add {file_name}', contents, branch=branch)
 
     print(f"Exported model stored in GitHub repo: {directory}/{file_name}")
 
