@@ -46,10 +46,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       
       - name: Run to export Lex Bot if test passed
-        if: steps.test.outputs.final_status != 'Completed'
+        if: steps.test.outputs.final_status == 'Completed'
         run: python3 export.py
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Run Import Script
+        run: |
+          python3 import.py
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
           AWS_DEFAULT_REGION: "us-east-1"
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
