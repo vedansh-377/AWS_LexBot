@@ -97,7 +97,7 @@ def store_exported_model_in_github(content, file_name):
     response = requests.put(url, headers=headers, json=payload)
     print(response)
 
-    if response.status_code == 200:
+    if response.status_code == 201:
         print(f"LexV2 model zip file '{file_name}' uploaded to GitHub successfully!")
     else:
         print("Failed to upload LexV2 model zip file to GitHub.")
