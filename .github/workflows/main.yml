@@ -31,11 +31,19 @@ jobs:
     - name: Set execute permissions
       run: |
         chmod +x export.py
+        chmod test.sh
         # chmod +x import.py
 
-    - name: Install dependencies and deploy Lambda
+    - name: Run to export Lex Bot and run test set
+      id : test
       run: |
-        python3 export.py
+        test.sh
+        if [[ "${{ steps.test.outputs.test_passed }}" == 'true' ]]; then
+          python3 export.py
+        else
+          echo "Test did not pass, skipping export."
+        fi
+        # python3 export.py
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
