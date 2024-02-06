@@ -18,9 +18,19 @@ else
     exit 1
 fi
 
-sleep 20
+# Wait until the test execution status is either "Completed" or "Failed"
+aws lexv2-models wait test-execution-complete \
+    --test-execution-id $test_execution_id \
+    --cli-input-json '{ "WaiterConfig": { "Delay": 10, "MaxAttempts": 30 }}'
+
 # Retrieve the test execution status
 test_execution_status=$(aws lexv2-models describe-test-execution --test-execution-id $test_execution_id | jq -r '.testExecutionStatus')
 
 # Print the test execution status
 echo "Test execution status: $test_execution_status"
+
+# Check if the test execution status is "Failed" and exit with an error status if it is
+if [[ "$test_execution_status" == "Failed" ]]; then
+    echo "Test execution failed."
+    exit 1
+fi
