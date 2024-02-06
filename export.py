@@ -12,7 +12,7 @@ def handler(event, context):
     bot_version = '9'
 
     github_token = os.environ.get('GITHUB_TOKEN')
-    repo = os.environ.get('REPO')
+    repo_name = os.environ.get('REPO')
     github_branch = os.environ.get('BRANCH')
     github_directory = os.environ.get('DIRECTORY')
 
@@ -37,17 +37,11 @@ def handler(event, context):
             # Specify the file name for the downloaded file
             file_name = f'version{bot_version}.zip'
 
-            # # GitHub credentials
-            # github_token = 'your_github_token'
-            # github_repo_name = 'your_github_repo'
-            # github_branch = 'main'  # or any other branch
-            # github_directory = 'lexzip'  # Specify the directory in the GitHub repo
-
-            # # Authenticate with GitHub using a personal access token
+            # Authenticate with GitHub using a personal access token
             g = Github(github_token)
 
-            # # Get the GitHub repository
-            # repo = g.get_repo(github_repo_name)
+            # Get the GitHub repository
+            repo = g.get_repo(repo_name)
 
             # Store the exported model in the GitHub repository
             store_exported_model_in_github(repo, github_branch, github_directory, file_name, response.content)
