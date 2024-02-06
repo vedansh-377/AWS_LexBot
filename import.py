@@ -28,10 +28,10 @@ def get_latest_github_release(owner, repo, folder):
 
     return None, None
 
-def create_github_release(owner, repo, tag_name, release_name):
+def create_github_release(owner, repo, tag_name, release_name, github_token):
     url = f"https://api.github.com/repos/{owner}/{repo}/releases"
     headers = {
-        "Authorization": f"token {os.getenv('GITHUB_TOKEN')}",
+        "Authorization": f"token {github_token}",
         "Accept": "application/vnd.github.v3+json"
     }
     data = {
@@ -42,7 +42,7 @@ def create_github_release(owner, repo, tag_name, release_name):
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.status_code == 201
 
-def handler(event, context):
+def main():
     # AWS service clients
     lex_models_client = boto3.client('lexv2-models')
 
@@ -50,16 +50,14 @@ def handler(event, context):
     owner = 'vedansh-377'
     repo = 'AWS_LexBot'
     folder = 'lexzip'
+    github_token = os.getenv('GITHUB_TOKEN')
 
     # Get the download URL and name of the latest Lex bot ZIP file from GitHub
     download_url, zip_name = get_latest_github_release(owner, repo, folder)
 
     if not download_url:
         print("No Lex bot ZIP file found in the specified GitHub folder. Exiting.")
-        return {
-            'statusCode': 500,
-            'body': json.dumps('No Lex bot ZIP file found in the specified GitHub folder.')
-        }
+        return 1
 
     # Create an upload URL
     create_upload_url_response = lex_models_client.create_upload_url()
@@ -83,7 +81,7 @@ def handler(event, context):
         importId=import_id,
         resourceSpecification={
             'botImportSpecification': {
-                'botName': 'Book',
+                'botName': 'Abook',
                 'roleArn': 'arn:aws:iam::526222510576:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_N3K8T788LA',
                 'dataPrivacy': {'childDirected': False},
                 'idleSessionTTLInSeconds': 600
@@ -106,18 +104,16 @@ def handler(event, context):
 
     if describe_import_response['importStatus'] == 'Completed':
         # Create a GitHub release with the tag name as the name of the ZIP file
-        if create_github_release(owner, repo, zip_name, f"Release {zip_name}"):
-            return {
-                'statusCode': 200,
-                'body': json.dumps('LexV2 import completed successfully! GitHub release created.')
-            }
+        if create_github_release(owner, repo, zip_name, f"Release {zip_name}", github_token):
+            print('LexV2 import completed successfully! GitHub release created.')
+            return 0
         else:
-            return {
-                'statusCode': 500,
-                'body': json.dumps('Failed to create GitHub release after LexV2 import.')
-            }
+            print('Failed to create GitHub release after LexV2 import.')
+            return 1
     else:
-        return {
-            'statusCode': 500,
-            'body': json.dumps('LexV2 import not yet completed.')
-        }
+        print('LexV2 import not yet completed.')
+        return 1
+
+if __name__ == "__main__":
+    exit_code = main()
+    exit(exit_code)

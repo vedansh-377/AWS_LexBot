@@ -32,6 +32,7 @@ jobs:
         run: |
           chmod +x export.py
           chmod +x test.py
+          chmod +x import.py
 
       - name: Run test.sh and capture status
         id: test
