@@ -12,7 +12,7 @@ def handler(event, context):
     bot_version = '9'
 
     github_token = os.environ.get('GITHUB_TOKEN')
-    github_repo_name = os.environ.get('REPO')
+    repo = os.environ.get('REPO')
     github_branch = os.environ.get('BRANCH')
     github_directory = os.environ.get('DIRECTORY')
 
@@ -47,7 +47,7 @@ def handler(event, context):
             g = Github(github_token)
 
             # # Get the GitHub repository
-            repo = g.get_repo(github_repo_name)
+            # repo = g.get_repo(github_repo_name)
 
             # Store the exported model in the GitHub repository
             store_exported_model_in_github(repo, github_branch, github_directory, file_name, response.content)
