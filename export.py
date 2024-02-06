@@ -12,7 +12,7 @@ def handler(event, context):
     bot_version = '9'
 
     github_token = os.environ.get('GITHUB_TOKEN')
-    repo = os.environ.get('REPO')
+    github_repo_name = os.environ.get('REPO')
     github_branch = os.environ.get('BRANCH')
     github_directory = os.environ.get('DIRECTORY')
 
@@ -43,10 +43,10 @@ def handler(event, context):
             # github_branch = 'main'  # or any other branch
             # github_directory = 'lexzip'  # Specify the directory in the GitHub repo
 
-            # Authenticate with GitHub using a personal access token
+            # # Authenticate with GitHub using a personal access token
             g = Github(github_token)
 
-            # Get the GitHub repository
+            # # Get the GitHub repository
             repo = g.get_repo(github_repo_name)
 
             # Store the exported model in the GitHub repository
