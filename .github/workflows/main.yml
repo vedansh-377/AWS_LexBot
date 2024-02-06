@@ -31,7 +31,7 @@ jobs:
     - name: Set execute permissions
       run: |
         chmod +x export.py
-        chmod ./test.sh
+        chmod +x test.sh
         # chmod +x import.py
 
     - name: Run to export Lex Bot and run test set
