@@ -25,10 +25,10 @@ while true; do
     
     # Check if the test execution status is Completed or Failed
     if [[ "$test_execution_status" == "Completed" ]]; then
-        echo "Test execution completed successfully."
+        echo "Completed"
         break
     elif [[ "$test_execution_status" == "Failed" ]]; then
-        echo "Test execution failed."
+        echo "Failed"
         exit 1
     else
         echo "Test execution status: $test_execution_status"

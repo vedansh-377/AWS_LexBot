@@ -34,16 +34,20 @@ jobs:
         chmod +x test.sh
         # chmod +x import.py
 
-    - name: Run to export Lex Bot and run test set
-      id : test
+    - name: Run test.sh and capture status
+      id: test
       run: |
         test_execution_status=$(./test.sh)
         echo "::set-output name=test_execution_status::$test_execution_status"
-        if [[ "$test_execution_status" == "Completed" ]]; then
-          python3 export.py
-        else
-          echo "Test did not pass, skipping export."
-        fi
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: "us-east-1"
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  
+    - name: Run to export Lex Bot if test passed
+      if: ${{ steps.test.outputs.test_execution_status == 'Completed' }}
+      run: python3 export.py
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
