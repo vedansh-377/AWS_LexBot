@@ -26,7 +26,7 @@ def main():
     lex_models_client = boto3.client('lexv2-models')
 
     # Folder containing Lex bot ZIP files
-    lexzip_folder = 'lexzip'
+    lexzip_folder = 'LexZip'
 
     # Get the path to the latest Lex bot ZIP file
     latest_zip_path = get_latest_zip_from_folder(lexzip_folder)
