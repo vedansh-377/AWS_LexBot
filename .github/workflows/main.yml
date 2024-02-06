@@ -37,7 +37,7 @@ jobs:
     - name: Run to export Lex Bot and run test set
       id : test
       run: |
-        test.sh
+        ./test.sh
         if [[ "${{ steps.test.outputs.test_passed }}" == 'true' ]]; then
           python3 export.py
         else
