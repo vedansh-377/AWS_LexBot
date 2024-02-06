@@ -5,7 +5,7 @@ import requests
 import time
 import base64
 
-def handler(event, context):
+def main():
     # Replace 'your_model_id' with the actual LexV2 model ID
     bot_id = 'IQU3BOJ9BH' 
     bot_version = '9'
@@ -35,16 +35,9 @@ def handler(event, context):
             store_exported_model_in_github(response.content, file_name)
         
         # Add any additional logic or processing here
-        
-        return {
-            'statusCode': 200,
-            'body': json.dumps('LexV2 export and storage in GitHub completed successfully!')
-        }
+        print("LexV2 export and storage in GitHub completed successfully!")
     else:
-        return {
-            'statusCode': 500,
-            'body': json.dumps('LexV2 export failed or not yet completed.')
-        }
+        print("LexV2 export failed or not yet completed.")
 
 def export_lexv2_model(bot_id, bot_version, region_name='us-east-1'):
     client = boto3.client('lexv2-models', region_name=region_name)
@@ -109,3 +102,6 @@ def store_exported_model_in_github(content, file_name):
         print(f"LexV2 model zip file '{file_name}' uploaded to GitHub successfully!")
     else:
         print("Failed to upload LexV2 model zip file to GitHub.")
+
+if __name__ == "__main__":
+    main()
