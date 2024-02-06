@@ -32,6 +32,5 @@ while true; do
         exit 1
     else
         echo "Test execution status: $test_execution_status"
-        sleep 10  # Wait for 10 seconds before checking again
     fi
 done

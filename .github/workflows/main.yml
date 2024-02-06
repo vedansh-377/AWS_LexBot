@@ -38,7 +38,7 @@ jobs:
       id : test
       run: |
         ./test.sh
-        if [[ ${{ steps.test.outputs.test_execution_status }} ]]; then
+        if [[ "${{ steps.test.outputs.test_execution_status }}" == "Completed" ]]; then
           python3 export.py
         else
           echo "Test did not pass, skipping export."
