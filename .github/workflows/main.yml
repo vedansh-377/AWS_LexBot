@@ -13,57 +13,57 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+#       - name: Install AWS CLI
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y awscli
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.11
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.11
 
-      - name: Install Python dependencies
-        run: |
-          python3 -m pip install --upgrade pip setuptools
-          python3 -m pip install -r requirements.txt
+#       - name: Install Python dependencies
+#         run: |
+#           python3 -m pip install --upgrade pip setuptools
+#           python3 -m pip install -r requirements.txt
 
-      - name: Set execute permissions
-        run: |
-          chmod +x export.py
-          chmod +x test.py
-          chmod +x import.py
+#       - name: Set execute permissions
+#         run: |
+#           chmod +x export.py
+#           chmod +x test.py
+#           chmod +x import.py
 
-      - name: Run test.sh and capture status
-        id: test
-        run: |
-          final_status=$(python3 test.py)
-          echo "::set-output name=final_status::$final_status"
+#       - name: Run test.sh and capture status
+#         id: test
+#         run: |
+#           final_status=$(python3 test.py)
+#           echo "::set-output name=final_status::$final_status"
 
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-1"
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_DEFAULT_REGION: "us-east-1"
+#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       
-      - name: Run to export Lex Bot if test passed
-        if: steps.test.outputs.final_status == 'Completed'
-        run: python3 export.py
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-1"
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#       - name: Run to export Lex Bot if test passed
+#         if: steps.test.outputs.final_status == 'Completed'
+#         run: python3 export.py
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_DEFAULT_REGION: "us-east-1"
+#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Run Import Script
-        run: |
-          python3 import.py --version 4
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
-          AWS_DEFAULT_REGION: "us-east-1"
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#       - name: Run Import Script
+#         run: |
+#           python3 import.py --version 4
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}
+#           AWS_DEFAULT_REGION: "us-east-1"
+#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
