@@ -71,7 +71,7 @@ jobs:
           AWS_DEFAULT_REGION: "us-east-1"
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Run Import Script1
+      - name: Run Import Script
         run: |
           python3 import.py
         env:

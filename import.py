@@ -26,7 +26,7 @@ def get_latest_zip_from_folder(folder):
 
     return None
 
-def create_github_release(owner, repo, tag_name, release_name, github_token):
+def create_github_release(owner, repo, tag_name, release_name, github_token, zip_path):
     url = f"https://api.github.com/repos/{owner}/{repo}/releases"
     headers = {
         "Authorization": f"token {github_token}",
@@ -38,7 +38,20 @@ def create_github_release(owner, repo, tag_name, release_name, github_token):
         "body": "Release created automatically after successful LexV2 import."
     }
     response = requests.post(url, headers=headers, json=data)
-    return response.status_code == 201
+    if response.status_code == 201:
+        release_id = response.json()["id"]
+        # Upload the zip file as an asset to the release
+        asset_url = f"https://api.github.com/repos/{owner}/{repo}/releases/{release_id}/assets"
+        asset_headers = {
+            "Authorization": f"token {github_token}",
+            "Content-Type": "application/zip"
+        }
+        with open(zip_path, "rb") as file:
+            asset_response = requests.post(asset_url, headers=asset_headers, data=file)
+            if asset_response.status_code == 201:
+                return True
+    return False
+
 
 def main(version=None):
     # AWS service clients
@@ -49,7 +62,7 @@ def main(version=None):
 
     # If a version is specified, use it
     if version:
-        zip_name = f"version{version}.zip"
+        zip_name = f"version{version}"
         latest_zip_path = os.path.join(lexzip_folder, zip_name)
         if not os.path.exists(latest_zip_path):
             print(f"Specified version '{version}' not found. Exiting.")
@@ -108,11 +121,11 @@ def main(version=None):
         print('LexV2 import completed successfully!')
         # Create a GitHub release with the tag name as the name of the latest ZIP file
         github_token = os.getenv('GITHUB_TOKEN')
-        if create_github_release('vedansh-377', 'AWS_LexBot', zip_name, f"Release {zip_name}", github_token):
+        if create_github_release('vedansh-377', 'AWS_LexBot', zip_name, f"Release {zip_name}", github_token, lexzip_folder):
             print('GitHub release created successfully!')
             return 0
         else:
-            print('Failed to create GitHub release after LexV2 import.')
+            print('Failed to create GitHub release or upload zip after LexV2 import.')
             return 1
     else:
         print('LexV2 import not yet completed.')
