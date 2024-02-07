@@ -59,7 +59,7 @@ jobs:
           AWS_DEFAULT_REGION: "us-east-1"
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Run Import Script
+      - name: Run Import Script1
         run: |
           ls -R /LexZip
           python3 import.py --version 4
