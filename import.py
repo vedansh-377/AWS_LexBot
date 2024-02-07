@@ -3,6 +3,7 @@ import boto3
 import time
 import json
 import requests
+import argparse
 
 def get_latest_zip_from_folder(folder):
     # List all files in the specified folder
@@ -37,19 +38,29 @@ def create_github_release(owner, repo, tag_name, release_name, github_token):
     response = requests.post(url, headers=headers, json=data)
     return response.status_code == 201
 
-def main():
+def main(version=None):
     # AWS service clients
     lex_models_client = boto3.client('lexv2-models')
 
     # Folder containing Lex bot ZIP files
     lexzip_folder = 'LexZip'
 
-    # Get the path to the latest Lex bot ZIP file
-    latest_zip_path = get_latest_zip_from_folder(lexzip_folder)
+    # If a version is specified, use it
+    if version:
+        zip_name = f"version{version}.zip"
+        latest_zip_path = os.path.join(lexzip_folder, zip_name)
+        if not os.path.exists(latest_zip_path):
+            print(f"Specified version '{version}' not found. Exiting.")
+            return 1
+    else:
+        # Get the path to the latest Lex bot ZIP file
+        latest_zip_path = get_latest_zip_from_folder(lexzip_folder)
 
-    if not latest_zip_path:
-        print("No Lex bot ZIP file found in the specified folder. Exiting.")
-        return 1
+        if not latest_zip_path:
+            print("No Lex bot ZIP file found in the specified folder. Exiting.")
+            return 1
+
+        zip_name = os.path.basename(latest_zip_path)
 
     # Create an upload URL
     create_upload_url_response = lex_models_client.create_upload_url()
@@ -94,7 +105,6 @@ def main():
     if describe_import_response['importStatus'] == 'Completed':
         print('LexV2 import completed successfully!')
         # Create a GitHub release with the tag name as the name of the latest ZIP file
-        zip_name = os.path.basename(latest_zip_path)
         github_token = os.getenv('GITHUB_TOKEN')
         if create_github_release('vedansh-377', 'AWS_LexBot', zip_name, f"Release {zip_name}", github_token):
             print('GitHub release created successfully!')
@@ -107,5 +117,8 @@ def main():
         return 1
 
 if __name__ == "__main__":
-    exit_code = main()
+    parser = argparse.ArgumentParser(description='Run LexV2 import with optional version')
+    parser.add_argument('--version', type=str, help='Specify the version to use')
+    args = parser.parse_args()
+    exit_code = main(args.version)
     exit(exit_code)
