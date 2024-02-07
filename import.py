@@ -63,7 +63,7 @@ def main(version=None):
     # If a version is specified, use it
     if version:
         zip_name = f"version{version}"
-        latest_zip_path = os.path.join(lexzip_folder, zip_name)
+        latest_zip_path = os.path.join(lexzip_folder, zip_name + '.zip')
         if not os.path.exists(latest_zip_path):
             print(f"Specified version '{version}' not found. Exiting.")
             return 1
@@ -121,7 +121,7 @@ def main(version=None):
         print('LexV2 import completed successfully!')
         # Create a GitHub release with the tag name as the name of the latest ZIP file
         github_token = os.getenv('GITHUB_TOKEN')
-        if create_github_release('vedansh-377', 'AWS_LexBot', zip_name, f"Release {zip_name}", github_token, lexzip_folder):
+        if create_github_release('vedansh-377', 'AWS_LexBot', zip_name, f"Release {zip_name}", github_token, latest_zip_path):
             print('GitHub release created successfully!')
             return 0
         else:
