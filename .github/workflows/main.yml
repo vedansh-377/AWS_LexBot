@@ -5,9 +5,12 @@ on:
     branches:
       - main
 
+  schedule:
+    - cron: '*/1 * * * *'
+
 jobs:
   deploy:
-    if: github.event_name == 'push'
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
 
     steps:
