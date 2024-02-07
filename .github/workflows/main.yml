@@ -59,10 +59,21 @@ jobs:
           AWS_DEFAULT_REGION: "us-east-1"
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: Fetch latest zip from S3
+        run: |
+          S3_BUCKET="my-lexv2-export-bucket"
+          LATEST_MODEL=$(aws s3 ls s3://$S3_BUCKET/ | sort -r | head -n 1 | awk '{print $4}')
+          echo "Latest model file: $LATEST_MODEL"
+          aws s3 cp s3://$S3_BUCKET/$LATEST_MODEL /home/runner/work/AWS_LexBot/AWS_LexBot/$LATEST_MODEL.zip
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Run Import Script1
         run: |
-          ls -R /LexZip
-          python3 import.py --version 4
+          python3 import.py
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_1 }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_1 }}

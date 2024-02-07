@@ -8,6 +8,7 @@ import argparse
 def get_latest_zip_from_folder(folder):
     # List all files in the specified folder
     files = os.listdir(folder)
+    print(files)
 
     # Filter out only ZIP files
     zip_files = [file for file in files if file.endswith('.zip')]
@@ -17,6 +18,7 @@ def get_latest_zip_from_folder(folder):
 
     # Sort the ZIP files based on their modification time
     sorted_zip_files = sorted(zip_files_paths, key=os.path.getmtime, reverse=True)
+    print(sorted_zip_files)
 
     if sorted_zip_files:
         # Return the path to the latest ZIP file
@@ -43,7 +45,7 @@ def main(version=None):
     lex_models_client = boto3.client('lexv2-models')
 
     # Folder containing Lex bot ZIP files
-    lexzip_folder = 'LexZip'
+    lexzip_folder = '/home/runner/work/AWS_LexBot/AWS_LexBot/'
 
     # If a version is specified, use it
     if version:
