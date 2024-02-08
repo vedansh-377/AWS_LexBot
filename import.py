@@ -47,11 +47,15 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
             "Authorization": f"token {github_token}",
             "Content-Type": "application/zip"
         }
-        with open(zip_path, "rb") as file:
-            asset_response = requests.post(asset_url, headers=asset_headers, data=file)
-            print(asset_response)
-            if asset_response.status_code == 201:
-                return True
+            
+        asset_response = requests.post(asset_url, headers=asset_headers, data=open(zip_path, "rb"))
+
+        print(asset_response)
+        if asset_response.status_code == 201:
+            return True
+        else:
+            print("Failed to upload asset:", asset_response.status_code, asset_response.text)
+
     return False
 
 
