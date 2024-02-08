@@ -35,7 +35,8 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
     }
 
 
-    download_url = f"{os.path.basename(zip_path)}"
+# Adjust the download_url to point to the ZIP file within the GitHub Actions workspace
+    download_url = f"https://raw.githubusercontent.com/{owner}/{repo}/master/{os.path.relpath(zip_path, '/home/runner/work/AWS_LexBot/AWS_LexBot/')}"
     body = f"Release created automatically after successful LexV2 import. Download the zip file [here]({download_url}).\n\n"
 
 
