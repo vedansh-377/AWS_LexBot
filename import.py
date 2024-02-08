@@ -49,7 +49,7 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
         }
         with open(zip_path, "rb") as file:
             asset_response = requests.post(asset_url, headers=asset_headers, data=file)
-            print(asset_headers)
+            print(asset_response)
             if asset_response.status_code == 201:
                 return True
     return False
