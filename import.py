@@ -38,23 +38,16 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
     with open(zip_path, "rb") as file:
         zip_content = file.read()
 
+    print(zip_content)
     # Encode the zip file content in base64
     zip_content_base64 = base64.b64encode(zip_content).decode('utf-8')
+    print(zip_content_base64)
 
     # Prepare the release creation request body
     data = {
         "tag_name": tag_name,
         "name": release_name,
-        "body": "Release created automatically after successful LexV2 import.",
-        "draft": False,  # Change to True if you want to create a draft release
-        "prerelease": False,  # Change to True if you want to create a pre-release
-        "assets": [
-            {
-                "name": os.path.basename(zip_path),
-                "content_type": "application/zip",
-                "file": zip_content_base64
-            }
-        ]
+        "body" : f"Release created automatically after successful LexV2 import. Download the zip file [here]({zip_content_base64})."
     }
 
     # Send the release creation request
