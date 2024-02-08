@@ -1,4 +1,4 @@
-import base64
+# import base64
 import os
 import boto3
 import time
@@ -35,16 +35,9 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
     }
 
 
-    with open(zip_path, 'rb') as file:
-        zip_content = file.read()
+    download_url = f"{os.path.basename(zip_path)}"
+    body = f"Release created automatically after successful LexV2 import. Download the zip file [here]({download_url}).\n\n"
 
-    # Encode the zip content if needed (e.g., using base64)
-    zip_content_base64 = base64.b64encode(zip_content).decode('utf-8')
-
-    # Construct the data URI for the Base64-encoded ZIP content
-    data_uri = f"data:application/zip;base64,{zip_content_base64}"
-    # Prepare the release creation request body
-    download_url = f"https://raw.githubusercontent.com/{owner}/{repo}/master/{data_uri}"
 
 
 
