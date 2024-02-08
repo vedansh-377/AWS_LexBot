@@ -6,7 +6,7 @@ import time
 def main():
     # Replace 'your_model_id' with the actual LexV2 model ID
     bot_id = 'V2V5BO42CC'
-    bot_version = '1'
+    bot_version = '2'
 
     # Export the LexV2 model
     export_response = export_lexv2_model(bot_id, bot_version)
