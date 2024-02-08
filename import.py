@@ -37,12 +37,8 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
 
 # Adjust the download_url to point to the ZIP file within the GitHub Actions workspace
 # Construct the download URL using the GitHub Actions workspace environment variables
-    download_url = f"file://{os.environ['GITHUB_WORKSPACE']}/{os.path.basename(zip_path)}"
-    body = f"Release created automatically after successful LexV2 import. Download the zip file [here]({download_url}).\n\n"
-
-
-
-
+# Adjust the download_url to point to the ZIP file within the GitHub Actions workspace
+    download_url = f"file://{zip_path}"
     body = f"Release created automatically after successful LexV2 import. Download the zip file [here]({download_url}).\n\n"
 
     data = {
