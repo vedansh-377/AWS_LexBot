@@ -36,10 +36,7 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
 
 
 # Adjust the download_url to point to the ZIP file within the GitHub Actions workspace
-# Construct the download URL using the GitHub Actions workspace environment variables
-# Adjust the download_url to point to the ZIP file within the GitHub Actions workspace
-    download_url = f"file://{zip_path}"
-    body = f"Release created automatically after successful LexV2 import. Download the zip file [here]({download_url}).\n\n"
+    body = f"Release created automatically after successful LexV2 import\n\n"
 
     data = {
         "tag_name": tag_name,
@@ -101,7 +98,7 @@ def main(version=None):
         importId=import_id,
         resourceSpecification={
             'botImportSpecification': {
-                'botName': 'Abook',
+                'botName': 'CasecreationBot',
                 'roleArn': 'arn:aws:iam::526222510576:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_N3K8T788LA',
                 'dataPrivacy': {'childDirected': False},
                 'idleSessionTTLInSeconds': 600
