@@ -4,6 +4,7 @@ import time
 import json
 import requests
 import argparse
+import base64
 
 def get_latest_zip_from_folder(folder):
     # List all files in the specified folder
@@ -32,31 +33,39 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
         "Authorization": f"token {github_token}",
         "Accept": "application/vnd.github.v3+json"
     }
+
+    # Read the zip file content
+    with open(zip_path, "rb") as file:
+        zip_content = file.read()
+
+    # Encode the zip file content in base64
+    zip_content_base64 = base64.b64encode(zip_content).decode('utf-8')
+
+    # Prepare the release creation request body
     data = {
         "tag_name": tag_name,
         "name": release_name,
-        "body": "Release created automatically after successful LexV2 import."
+        "body": "Release created automatically after successful LexV2 import.",
+        "draft": False,  # Change to True if you want to create a draft release
+        "prerelease": False,  # Change to True if you want to create a pre-release
+        "assets": [
+            {
+                "name": os.path.basename(zip_path),
+                "content_type": "application/zip",
+                "file": zip_content_base64
+            }
+        ]
     }
+
+    # Send the release creation request
     response = requests.post(url, headers=headers, json=data)
     print(response)
     if response.status_code == 201:
         release_id = response.json()["id"]
-        # Upload the zip file as an asset to the release
-        asset_url = f"https://api.github.com/repos/{owner}/{repo}/releases/{release_id}/assets"
-        asset_headers = {
-            "Authorization": f"token {github_token}",
-            "Content-Type": "application/zip"
-        }
-            
-        asset_response = requests.post(asset_url, headers=asset_headers, data=open(zip_path, "rb"))
-
-        print(asset_response)
-        if asset_response.status_code == 201:
-            return True
-        else:
-            print("Failed to upload asset:", asset_response.status_code, asset_response.text)
-
-    return False
+        return True
+    else:
+        print("Failed to create GitHub release:", response.status_code, response.text)
+        return False
 
 
 def main(version=None):
