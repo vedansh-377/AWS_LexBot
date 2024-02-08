@@ -1,10 +1,9 @@
 import os
 import boto3
 import time
-import json
 import requests
 import argparse
-import base64
+
 
 def get_latest_zip_from_folder(folder):
     # List all files in the specified folder
@@ -34,20 +33,15 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
         "Accept": "application/vnd.github.v3+json"
     }
 
-    # Read the zip file content
-    with open(zip_path, "rb") as file:
-        zip_content = file.read()
-
-    print(zip_content)
-    # Encode the zip file content in base64
-    zip_content_base64 = base64.b64encode(zip_content).decode('utf-8')
-    print(zip_content_base64)
 
     # Prepare the release creation request body
+    download_url = f"https://raw.githubusercontent.com/{owner}/{repo}/master/{zip_path}"
+    body = f"Release created automatically after successful LexV2 import. Download the zip file [here]({download_url})."
+
     data = {
         "tag_name": tag_name,
         "name": release_name,
-        "body" : f"Release created automatically after successful LexV2 import. Download the zip file [here]({zip_content_base64})."
+        "body" : body
     }
 
     # Send the release creation request
