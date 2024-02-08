@@ -38,6 +38,7 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
         "body": "Release created automatically after successful LexV2 import."
     }
     response = requests.post(url, headers=headers, json=data)
+    print(response)
     if response.status_code == 201:
         release_id = response.json()["id"]
         # Upload the zip file as an asset to the release
@@ -48,6 +49,7 @@ def create_github_release(owner, repo, tag_name, release_name, github_token, zip
         }
         with open(zip_path, "rb") as file:
             asset_response = requests.post(asset_url, headers=asset_headers, data=file)
+            print(asset_headers)
             if asset_response.status_code == 201:
                 return True
     return False
